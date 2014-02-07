@@ -1,0 +1,12 @@
+name: StarLift
+version: 0.1
+description: Fahrstuhl plugin
+author: Aubli
+main: me.Aubli.StarLift.StarLift
+
+commands:
+    sl:
+       description: StarLift Befehle!
+       usage: |
+              /<command> tool
+              /<command> lift [liftID] [dest]

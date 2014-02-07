@@ -1,0 +1,2 @@
+sl.create 						Fahrstuhl erstellen
+sl.tool 						Tool benutzen
