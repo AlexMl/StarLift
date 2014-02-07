@@ -264,9 +264,9 @@ public class StarLift extends JavaPlugin{
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 							if(tempLoc.clone().subtract(1, 0, 0).getBlock().getType()!=Material.AIR){
           
-          for(int k=0;k<liftX;k++){
-             tempLoc.clone().add(k, 1, 0).getBlock().setType(Material.IRON_FENCE);
-          }
+								for(int k=0;k<liftX;k++){
+									tempLoc.clone().add(k, 1, 0).getBlock().setType(Material.IRON_FENCE);
+								}
          
 								stations++;
 								stationY.put(stations, tempLoc.getBlockY());
@@ -281,11 +281,11 @@ public class StarLift extends JavaPlugin{
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 							if(tempLoc.clone().subtract(0, 0, 1).getBlock().getType()!=Material.AIR){
 						
-          for(int k=0;k<liftX;k++){
-             tempLoc.clone().add(0, 1, k).getBlock().setType(Material.IRON_FENCE);
-          }
-
-        		stations++;
+								for(int k=0;k<liftX;k++){
+									tempLoc.clone().add(0, 1, k).getBlock().setType(Material.IRON_FENCE);
+								}
+					
+								stations++;
 								stationY.put(stations, tempLoc.getBlockY());
 							}
 						}
@@ -298,11 +298,11 @@ public class StarLift extends JavaPlugin{
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 							if(tempLoc.clone().add(1, 0, 0).getBlock().getType()!=Material.AIR){
 							
-          for(int k=0;k<liftX;k++){
-             tempLoc.clone().add(-k, 1, 0).getBlock().setType(Material.IRON_FENCE);
-          }
+								for(int k=0;k<liftX;k++){
+									tempLoc.clone().add(-k, 1, 0).getBlock().setType(Material.IRON_FENCE);
+								}
 
-         	stations++;
+								stations++;
 								stationY.put(stations, tempLoc.getBlockY());
 							}
 						}
@@ -316,10 +316,11 @@ public class StarLift extends JavaPlugin{
 							if(tempLoc.clone().subtract(0, 0, -1).getBlock().getType()!=Material.AIR){
 								
 
-          for(int k=0;k<liftX;k++){
-             tempLoc.clone().add(0, 1, -k).getBlock().setType(Material.IRON_FENCE);
-          }
-          stations++;
+								for(int k=0;k<liftX;k++){
+									tempLoc.clone().add(0, 1, -k).getBlock().setType(Material.IRON_FENCE);
+								}
+								
+								stations++;
 								stationY.put(stations, tempLoc.getBlockY());
 							}
 						}
