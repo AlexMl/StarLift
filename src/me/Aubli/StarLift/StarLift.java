@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class StarLift extends JavaPlugin{
 	
@@ -34,6 +35,8 @@ public class StarLift extends JavaPlugin{
 	public String messagePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "StarLift" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
 	
 	public boolean enable = false;
+	
+	public int guitTaskID = -1;
 	
 	public File signFile;
 	public FileConfiguration signConfig;
@@ -48,6 +51,7 @@ public class StarLift extends JavaPlugin{
 		clearToolItem(null);
 		System.out.println(liftStats.toString());
 		liftStats.clear();
+		Bukkit.getScheduler().cancelAllTasks();
 		//saveLifts();
 		logger.info("[StarLift] Plugin is disabled!");
 	}
@@ -525,7 +529,7 @@ public class StarLift extends JavaPlugin{
 		liftStats.put(liftID, destination);
 	}
 	
-	public void enterLift(Player playerSender, Location from, Location to){
+	public boolean enterLift(Player playerSender, Location from, Location to){
 		
 		for(int i=0;i<new File(liftPath).listFiles().length;i++){
 			File liftFile = new File(liftPath).listFiles()[i];
@@ -534,8 +538,8 @@ public class StarLift extends JavaPlugin{
 			Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
 			Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
 			
-			wall1Loc.add(0.5, 0, 0.5);
-			wall2Loc.add(-0.5, liftConfig.getInt("StarLift.Lift.Höhe"), -0.5);
+			wall1Loc.add(0.8, 0, 0.8);
+			wall2Loc.add(-0.2, liftConfig.getInt("StarLift.Lift.Höhe"), -0.2);
 			
 		/*	Bukkit.broadcastMessage(wall1Loc.toString() + "  " + wall2Loc.toString());
 			
@@ -564,18 +568,137 @@ public class StarLift extends JavaPlugin{
 								liftGui.addItem(lift);
 							}
 							
-							new GuiRunnable(playerSender, liftGui).runTaskLater(this, 2*20L);
+							guitTaskID = new GuiRunnable(playerSender, liftGui).runTaskLater(this, 1*20L).getTaskId();
 							//playerSender.openInventory(liftGui);
-							return;
+							return true;
 						}
 					}
 				}
 			}		
 		}
+		return false;
 	}
 	
-	public void leaveLift(Player playerSender, Location from, Location to){
+	public boolean leaveLift(final Player playerSender, Location from, Location to){
 		
+		for(int i=0;i<new File(liftPath).listFiles().length;i++){
+			File liftFile = new File(liftPath).listFiles()[i];
+			final FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
+			
+			Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
+			Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
+			
+			wall1Loc.add(0.8, 0, 0.8);
+			wall2Loc.add(-0.2, liftConfig.getInt("StarLift.Lift.Höhe"), -0.2);
+			
+		/*	Bukkit.broadcastMessage(wall1Loc.toString() + "  " + wall2Loc.toString());
+			
+			Bukkit.broadcastMessage("FromX < wall2LocX : " + ChatColor.AQUA + from.getX() + ChatColor.RESET + "<" + ChatColor.GOLD + wall2Loc.getX() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getX()<wall2Loc.getX()));
+			Bukkit.broadcastMessage("FromX > wall1LocX : " + ChatColor.AQUA + from.getX() + ChatColor.RESET + ">" + ChatColor.GOLD + wall1Loc.getX() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getX()>wall1Loc.getX()));
+
+			Bukkit.broadcastMessage("FromZ < wall2LocZ : " + ChatColor.AQUA + from.getZ() + ChatColor.RESET + "<" + ChatColor.GOLD + wall2Loc.getZ() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getZ()<wall2Loc.getZ()));
+			Bukkit.broadcastMessage("FromZ > wall1LocZ : " + ChatColor.AQUA + from.getZ() + ChatColor.RESET + ">" + ChatColor.GOLD + wall1Loc.getZ() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getZ()>wall1Loc.getZ()) + "\n\n");
+		*/	
+			
+			if(to.getX()>wall2Loc.getX() || to.getX()<wall1Loc.getX() || to.getZ()>wall2Loc.getZ() || to.getZ()<wall1Loc.getZ()){
+				if(from.getX()<wall2Loc.getX() && from.getX()>wall1Loc.getX()){
+					if(from.getZ()<wall2Loc.getZ() && from.getZ()>wall1Loc.getZ()){
+						if(from.getY()<wall2Loc.getY() && from.getY()>wall1Loc.getY()){
+							Bukkit.broadcastMessage(ChatColor.RED + "aus fahrstuhl " + liftConfig.getString("StarLift.Allgemein.ID"));
+							Bukkit.getScheduler().cancelTask(guitTaskID);
+							
+							new BukkitRunnable() {
+								
+								@Override
+								public void run() {
+									
+									Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
+									Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
+									
+									Location wallTemp = wall1Loc.clone();
+									wallTemp.setY(playerSender.getLocation().getBlockY());
+									wall2Loc.setY(wallTemp.getY());									
+									
+									int doorHeight = liftConfig.getInt("StarLift.Lift.Türhöhe");
+									int liftX = liftConfig.getInt("StarLift.Lift.Breite");
+									
+									for(int x=1;x<(liftX+1);x++){					
+										if(wallTemp.clone().add(x, 0, 0).getBlock().getType()==Material.AIR){
+											Location tempLoc = wallTemp.clone().add(x, 0, 0);
+											if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
+												if(tempLoc.clone().subtract(1, 0, 0).getBlock().getType()!=Material.AIR){
+													
+													for(int j=0;j<doorHeight;j++){
+														for(int k=0;k<liftX;k++){
+															if(tempLoc.clone().add(k, j, 0).getBlock().getType()==Material.AIR){
+																tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
+															}								
+														} 
+													}
+												}
+											}
+										}
+										
+										if(wallTemp.clone().add(0, 0, x).getBlock().getType()==Material.AIR){
+											Location tempLoc = wallTemp.clone().add(0, 0, x);
+											if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
+												if(tempLoc.clone().subtract(0, 0, 1).getBlock().getType()!=Material.AIR){
+													
+													for(int j=0;j<doorHeight;j++){
+														for(int k=0;k<liftX;k++){
+															if(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
+																tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
+															}								
+														} 
+													}		
+												}
+											}
+										}
+										
+										if(wall2Loc.clone().add(-x, 0, 0).getBlock().getType()==Material.AIR){
+											Location tempLoc = wall2Loc.clone().add(-x, 0, 0);
+											if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
+												if(tempLoc.clone().add(1, 0, 0).getBlock().getType()!=Material.AIR){
+													
+													for(int j=0;j<doorHeight;j++){
+														for(int k=0;k<liftX;k++){
+															if(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
+																tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
+															}								
+														} 
+													}
+												}
+											}
+										}
+										
+										if(wall2Loc.clone().add(0, 0, -x).getBlock().getType()==Material.AIR){
+											Location tempLoc = wall2Loc.clone().add(0, 0, -x);
+											if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
+												if(tempLoc.clone().subtract(0, 0, -1).getBlock().getType()!=Material.AIR){	
+													
+													for(int j=0;j<doorHeight;j++){
+														for(int k=0;k<liftX;k++){
+															if(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
+																tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
+															}								
+														} 
+													}
+												}
+											}
+										}
+									}
+									playerSender.playSound(playerSender.getLocation(), Sound.PISTON_EXTEND, 80, 0);
+									
+								}
+							}.runTaskLater(this, 1*20L);
+							
+							return true;
+						}
+					}
+				}
+			}		
+		}
+			return false;
 	}
 	
 	public int getFloor(int liftID, int y){
