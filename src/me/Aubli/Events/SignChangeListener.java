@@ -25,15 +25,21 @@ public class SignChangeListener implements Listener{
 					int floor = Integer.parseInt(event.getLine(2));
 					int liftID = Integer.parseInt(event.getLine(1));
 					
-					Bukkit.broadcastMessage(plugin.messagePrefix);
-					event.setLine(0, plugin.messagePrefix);
-					event.setLine(1, "Lift: " + liftID);
-					event.setLine(2, ChatColor.MAGIC + "Status hier");
-					event.setLine(3, "Stockwerk: " + floor);
-					
-					plugin.saveSign(event.getBlock().getLocation(), liftID, floor);
-					eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.DARK_GREEN + "Stockwerk gespeichert!");
-					return;
+					if(plugin.liftStats.containsKey(liftID)){
+						Bukkit.broadcastMessage(plugin.messagePrefix);
+						event.setLine(0, plugin.messagePrefix);
+						event.setLine(1, "Lift: " + liftID);
+						event.setLine(2, ChatColor.MAGIC + "Status hier");
+						event.setLine(3, "Stockwerk: " + floor);
+						
+						plugin.saveSign(event.getBlock().getLocation(), liftID, floor);
+						eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.DARK_GREEN + "Stockwerk gespeichert!");
+						return;
+					}else{
+						eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.RED + "Lift " + liftID + " existiert nicht!");
+						event.setCancelled(true);
+						return;
+					}
 				}else{
 					eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.RED + "Das Schild ist nicht korrekt!");
 					event.setCancelled(true);
