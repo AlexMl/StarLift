@@ -1,9 +1,13 @@
 package me.Aubli.StarLift;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -35,8 +39,6 @@ public class LiftRunnable extends BukkitRunnable{
 	private int liftX;
 	private int liftZ;
 	private int liftID;
-	
-	private int speed = 10;
 	
 	private int i;
 	
@@ -168,7 +170,31 @@ public class LiftRunnable extends BukkitRunnable{
 				player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)75, (float)0);
 				player.sendMessage("DING!");
 				plugin.saveLifts();
-				System.out.println(plugin.liftStats.toString());
+				
+				File liftFile = new File(plugin.liftPath + liftID + ".yml");
+				FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
+				
+				Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
+				Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
+				
+				int liftX = liftConfig.getInt("StarLift.Lift.Breite");
+				int liftZ = liftConfig.getInt("StarLift.Lift.Länge");		
+				int doorHeight = liftConfig.getInt("StarLift.Lift.Türhöhe");				
+
+				wall1Loc.setY(dest+1);
+				wall2Loc.setY(dest+1);
+				
+				for(int y=0;y<doorHeight;y++){
+					for(int x=0;x<(liftX+2);x++){	
+						for(int z=0;z<(liftZ+2);z++){
+							if(wall1Loc.clone().add(x, y, z).getBlock().getType()==Material.IRON_FENCE){
+								wall1Loc.clone().add(x, y, z).getBlock().setType(Material.AIR);
+							}
+						}				
+					}
+				}
+				
+				
 				this.cancel();
 			}
 		}
