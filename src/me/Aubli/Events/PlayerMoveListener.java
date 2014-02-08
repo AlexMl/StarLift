@@ -17,12 +17,10 @@ public class PlayerMoveListener implements Listener{
 		Player eventPlayer = event.getPlayer();
 		
 		if(event.getFrom().distance(event.getTo())>0.18){
-		//	Bukkit.broadcastMessage(Math.abs(event.getFrom().getY()-event.getTo().getY()) + "");
 			if(Math.abs(event.getFrom().getY()-event.getTo().getY())<1){
 				plugin.enterLift(eventPlayer, event.getFrom(), event.getTo());
 				return;
 			}
-		//	Bukkit.broadcastMessage(eventPlayer.getName() + " true");
 		}
 	}
 	

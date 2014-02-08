@@ -167,7 +167,7 @@ public class LiftRunnable extends BukkitRunnable{
 				
 			}else{
 				plugin.liftStats.put(liftID, dest);
-				player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)75, (float)0);
+				player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)65, (float)0);
 				player.sendMessage("DING!");
 				plugin.saveLifts();
 				
@@ -193,6 +193,7 @@ public class LiftRunnable extends BukkitRunnable{
 						}				
 					}
 				}
+				player.playSound(player.getLocation(), Sound.PISTON_RETRACT, 80, 0);
 				
 				
 				this.cancel();

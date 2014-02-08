@@ -536,33 +536,40 @@ public class StarLift extends JavaPlugin{
 			Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
 			Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
 			
-		/*	Bukkit.broadcastMessage("FromX > wall2LocX : " + ChatColor.AQUA + from.getX() + ChatColor.RESET + ">" + ChatColor.GOLD + wall2Loc.getX() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getX()>wall2Loc.getX()));
+			wall1Loc.add(0.5, 0, 0.5);
+			wall2Loc.add(-0.5, liftConfig.getInt("StarLift.Lift.Höhe"), -0.5);
+			
+		/*	Bukkit.broadcastMessage(wall1Loc.toString() + "  " + wall2Loc.toString());
+			
+			Bukkit.broadcastMessage("FromX > wall2LocX : " + ChatColor.AQUA + from.getX() + ChatColor.RESET + ">" + ChatColor.GOLD + wall2Loc.getX() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getX()>wall2Loc.getX()));
 			Bukkit.broadcastMessage("FromX < wall1LocX : " + ChatColor.AQUA + from.getX() + ChatColor.RESET + "<" + ChatColor.GOLD + wall1Loc.getX() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getX()<wall1Loc.getX()));
 
 			Bukkit.broadcastMessage("FromZ > wall2LocZ : " + ChatColor.AQUA + from.getZ() + ChatColor.RESET + ">" + ChatColor.GOLD + wall2Loc.getZ() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getZ()>wall2Loc.getZ()));
 			Bukkit.broadcastMessage("FromZ < wall1LocZ : " + ChatColor.AQUA + from.getZ() + ChatColor.RESET + "<" + ChatColor.GOLD + wall1Loc.getZ() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getZ()<wall1Loc.getZ()) + "\n\n");
-			*/
+		*/	
 			
 			if(from.getX()>wall2Loc.getX() || from.getX()<wall1Loc.getX() || from.getZ()>wall2Loc.getZ() || from.getZ()<wall1Loc.getZ()){
 				if(to.getX()<wall2Loc.getX() && to.getX()>wall1Loc.getX()){
 					if(to.getZ()<wall2Loc.getZ() && to.getZ()>wall1Loc.getZ()){
-						
-						playerSender.sendMessage("im fahrstuhl Nummer " + liftConfig.getString("StarLift.Allgemein.ID") + ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9);
-						Inventory liftGui = Bukkit.createInventory(playerSender, ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9, "Fahrstuhl " + liftFile.getName().split(".y")[0] + ". Welches Stockwerk?");
-						liftGui.clear();
-						
-						ItemStack lift = new ItemStack(Material.ITEM_FRAME);
-						ItemMeta liftMeta = lift.getItemMeta();
-						
-						for(int k=0;k<liftConfig.getInt("StarLift.Lift.Stationen");k++){							
-							liftMeta.setDisplayName("Stockwerk " + (k+1));
-							lift.setItemMeta(liftMeta);
-							liftGui.addItem(lift);
+						if(to.getY()<wall2Loc.getY() && to.getY()>wall1Loc.getY()){
+							
+							playerSender.sendMessage("im fahrstuhl Nummer " + liftConfig.getString("StarLift.Allgemein.ID"));
+							Inventory liftGui = Bukkit.createInventory(playerSender, ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9, "Fahrstuhl " + liftFile.getName().split(".y")[0] + ". Welches Stockwerk?");
+							liftGui.clear();
+							
+							ItemStack lift = new ItemStack(Material.ITEM_FRAME);
+							ItemMeta liftMeta = lift.getItemMeta();
+							
+							for(int k=0;k<liftConfig.getInt("StarLift.Lift.Stationen");k++){							
+								liftMeta.setDisplayName("Stockwerk " + (k+1));
+								lift.setItemMeta(liftMeta);
+								liftGui.addItem(lift);
+							}
+							
+							new GuiRunnable(playerSender, liftGui).runTaskLater(this, 2*20L);
+							//playerSender.openInventory(liftGui);
+							return;
 						}
-						
-						new GuiRunnable(playerSender, liftGui).runTaskLater(this, 2*20L);
-						//playerSender.openInventory(liftGui);
-						return;
 					}
 				}
 			}		
