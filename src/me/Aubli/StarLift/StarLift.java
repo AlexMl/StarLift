@@ -580,6 +580,20 @@ public class StarLift extends JavaPlugin{
 		
 	}
 	
+	public int getFloor(int liftID, int y){
+		
+		File liftFile = new File(liftPath + liftID + ".yml");
+		FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
+		
+		for(int i=1;i<liftConfig.getInt("StarLift.Lift.Stationen")+1;i++){
+			if(liftConfig.getInt("StarLift.Stationen." + i)==y){
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
 	public void saveLifts(){
 		
 		Object[] lifts = liftStats.keySet().toArray();

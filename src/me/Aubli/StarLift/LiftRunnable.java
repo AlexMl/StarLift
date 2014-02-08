@@ -45,9 +45,10 @@ public class LiftRunnable extends BukkitRunnable{
 	@Override
 	public void run() {
 		
-		if(dest>orig){ // Fahrstuhl fährt hoch
+		
+		if(player.getLocation().getBlockY()!=dest+1){
+			if(dest>orig){ // Fahrstuhl fährt hoch	
 			
-			if(player.getLocation().getBlockY()!=dest+1){
 				player.teleport(player.getLocation().add(0, 1, 0), TeleportCause.PLUGIN);
 				
 				
@@ -100,17 +101,9 @@ public class LiftRunnable extends BukkitRunnable{
 						new LiftRunnable(plugin, player, wallLoc.clone(), liftX, liftZ, dest, player.getLocation().getBlockY(), i+1, liftID).runTaskTimer(plugin, 7L, 10L);
 						this.cancel();					
 					}
-				}				
-			}else{
-				player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)75, (float)0);
-				player.sendMessage("DING!");
-				this.cancel();
-			}
+				}
 			
-		}else if(orig>dest){ //Fahrstuhl fährt runter
-			
-			if(player.getLocation().getBlockY()!=dest+1){
-				
+			}else if(orig>dest){ //Fahrstuhl fährt runter
 				Location tempLoc = liftLoc.clone();
 				tempLoc.setY(player.getLocation().getBlockY()-1);
 				
@@ -164,42 +157,41 @@ public class LiftRunnable extends BukkitRunnable{
 						this.cancel();					
 					}
 				}	
-				
-			}else{
-				plugin.liftStats.put(liftID, dest);
-				player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)65, (float)0);
-				player.sendMessage("DING!");
-				plugin.saveLifts();
-				
-				File liftFile = new File(plugin.liftPath + liftID + ".yml");
-				FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
-				
-				Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
-				Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
-				
-				int liftX = liftConfig.getInt("StarLift.Lift.Breite");
-				int liftZ = liftConfig.getInt("StarLift.Lift.Länge");		
-				int doorHeight = liftConfig.getInt("StarLift.Lift.Türhöhe");				
-
-				wall1Loc.setY(dest+1);
-				wall2Loc.setY(dest+1);
-				
-				for(int y=0;y<doorHeight;y++){
-					for(int x=0;x<(liftX+2);x++){	
-						for(int z=0;z<(liftZ+2);z++){
-							if(wall1Loc.clone().add(x, y, z).getBlock().getType()==Material.IRON_FENCE){
-								wall1Loc.clone().add(x, y, z).getBlock().setType(Material.AIR);
-							}
-						}				
-					}
-				}
-				player.playSound(player.getLocation(), Sound.PISTON_RETRACT, 80, 0);
-				
-				
-				this.cancel();
 			}
+		}else{
+			plugin.liftStats.put(liftID, dest);
+			
+			File liftFile = new File(plugin.liftPath + liftID + ".yml");
+			FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
+			
+			player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)65, (float)0);
+			player.sendMessage("DING! Stockwerk " + plugin.getFloor(liftID, dest));
+			plugin.saveLifts();
+						
+			Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
+			Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
+			
+			int liftX = liftConfig.getInt("StarLift.Lift.Breite");
+			int liftZ = liftConfig.getInt("StarLift.Lift.Länge");		
+			int doorHeight = liftConfig.getInt("StarLift.Lift.Türhöhe");				
+
+			wall1Loc.setY(dest+1);
+			wall2Loc.setY(dest+1);
+				
+			for(int y=0;y<doorHeight;y++){
+				for(int x=0;x<(liftX+2);x++){	
+					for(int z=0;z<(liftZ+2);z++){
+						if(wall1Loc.clone().add(x, y, z).getBlock().getType()==Material.IRON_FENCE){
+							wall1Loc.clone().add(x, y, z).getBlock().setType(Material.AIR);
+						}
+					}				
+				}
+			}
+			
+			player.playSound(player.getLocation(), Sound.PISTON_RETRACT, 80, 0);			
+			this.cancel();
 		}
-		
+				
 		i++;
 	}
 
