@@ -23,12 +23,12 @@ public class InventoryClickListener implements Listener{
 			
 			if(event.getInventory().getTitle().contains("Welches Stockwerk?")){			
 				if(event.getCurrentItem().getType() == Material.ITEM_FRAME){
-					if(event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().getDisplayName().contains("Stockwerk:")){
+					if(event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().getDisplayName().contains("Stockwerk")){
 						event.setCancelled(true);
 						eventPlayer.closeInventory();
 						
-						int floor = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().split(": ")[1]);
-						plugin.lift(eventPlayer, Integer.parseInt(event.getInventory().getTitle().split("Fahrstuhl ")[1].split(" Welches")[0]), floor);
+						int floor = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().split("werk ")[1]);
+						plugin.lift(eventPlayer, Integer.parseInt(event.getInventory().getTitle().split("Fahrstuhl ")[1].split(". Welches")[0]), floor);
 						return;
 					}
 				}

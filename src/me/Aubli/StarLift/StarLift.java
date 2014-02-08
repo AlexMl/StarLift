@@ -434,7 +434,7 @@ public class StarLift extends JavaPlugin{
 		}
 	}
 	
-	public void lift(Player playerSender, int liftID, int destination){
+	public void lift(Player playerSender, int liftID, int destinationFloor){
 		
 		File liftFile = new File(liftPath + liftID + ".yml");
 		FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
@@ -444,6 +444,8 @@ public class StarLift extends JavaPlugin{
 		
 		Location wallTemp = wall1Loc.clone();
 		wallTemp.setY(playerSender.getLocation().getBlockY());
+		
+		int destination = liftConfig.getInt("StarLift.Stationen." + destinationFloor);
 		
 		int liftX = liftConfig.getInt("StarLift.Lift.Breite");
 		int liftZ = liftConfig.getInt("StarLift.Lift.Länge");		
@@ -517,7 +519,6 @@ public class StarLift extends JavaPlugin{
 			}
 		}
 		
-		
 		new LiftRunnable(this, playerSender, wall1Loc, liftX, liftZ, destination, playerSender.getLocation().getBlockY(), 0, liftID).runTaskTimer(this, 25L, 10L);
 		playerSender.playSound(playerSender.getLocation(), Sound.CLICK, 90, 0);
 		
@@ -545,12 +546,14 @@ public class StarLift extends JavaPlugin{
 					if(to.getZ()<wall2Loc.getZ() && to.getZ()>wall1Loc.getZ()){
 						
 						playerSender.sendMessage("im fahrstuhl Nummer " + liftConfig.getString("StarLift.Allgemein.ID") + ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9);
-						Inventory liftGui = Bukkit.createInventory(playerSender, ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9, "Fahrstuhl " + liftFile.getName().split(".y")[0] + " Welches Stockwerk?");
+						Inventory liftGui = Bukkit.createInventory(playerSender, ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9, "Fahrstuhl " + liftFile.getName().split(".y")[0] + ". Welches Stockwerk?");
+						liftGui.clear();
 						
-						for(int k=0;k<liftConfig.getInt("StarLift.Lift.Stationen");k++){
-							ItemStack lift = new ItemStack(Material.ITEM_FRAME);
-							ItemMeta liftMeta = lift.getItemMeta();
-							liftMeta.setDisplayName("Stockwerk " + k+1);
+						ItemStack lift = new ItemStack(Material.ITEM_FRAME);
+						ItemMeta liftMeta = lift.getItemMeta();
+						
+						for(int k=0;k<liftConfig.getInt("StarLift.Lift.Stationen");k++){							
+							liftMeta.setDisplayName("Stockwerk " + (k+1));
 							lift.setItemMeta(liftMeta);
 							liftGui.addItem(lift);
 						}
