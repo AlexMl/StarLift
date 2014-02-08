@@ -49,10 +49,10 @@ public class StarLift extends JavaPlugin{
 	@Override
 	public void onDisable(){
 		clearToolItem(null);
-		System.out.println(liftStats.toString());
 		liftStats.clear();
 		Bukkit.getScheduler().cancelAllTasks();
-		//saveLifts();
+		saveLifts();
+		
 		logger.info("[StarLift] Plugin is disabled!");
 	}
 	
@@ -61,11 +61,7 @@ public class StarLift extends JavaPlugin{
 		
 		loadConfig();
 		registerCommands();
-		registerListeners();	
-		//loadLifts();
-		
-		liftStats.put(1, 3);
-		liftStats.put(2, 3);
+		registerListeners();		
 		
 		if(enable==false){
 			Bukkit.getPluginManager().disablePlugin(this);
@@ -119,6 +115,7 @@ public class StarLift extends JavaPlugin{
 		tool.setItemMeta(toolMeta);		
 		
 		liftGround = Material.valueOf(this.getConfig().getString("config.lift.material"));
+		loadLifts();
 	}
 	
 	public void clearToolItem(Player playerSender){
@@ -141,7 +138,7 @@ public class StarLift extends JavaPlugin{
 		
 		File liftFile = new File(liftPath + liftID + ".yml");
 		FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
-		Bukkit.broadcastMessage(liftStats.toString());
+		
 		int orig = liftStats.get(liftID);
 		int dest = liftConfig.getInt("StarLift.Stationen." + floor);
 		
@@ -288,7 +285,6 @@ public class StarLift extends JavaPlugin{
 			for(int y=0;y<liftHeight;y++){
 				for(int x=1;x<(liftX+1);x++){					
 					if(wall1Loc.clone().add(x, y, 0).getBlock().getType()==Material.AIR){
-						//Bukkit.broadcastMessage(ChatColor.GREEN + "Station @" + wall1Loc.clone().add(x, y, 0).getBlockX() + ":" +  wall1Loc.clone().add(x, y, 0).getBlockY() + ":" +  wall1Loc.clone().add(x, y, 0).getBlockZ());
 						Location tempLoc = wall1Loc.clone().add(x, y, 0);
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 							if(tempLoc.clone().subtract(1, 0, 0).getBlock().getType()!=Material.AIR){
@@ -430,10 +426,10 @@ public class StarLift extends JavaPlugin{
 				e.printStackTrace();
 			}
 			
-			playerSender.sendMessage("Fahrstuhl mit " + stations + " Stationen gefunden! LiftID=" + liftFile.getName().split(".y")[0]);
+			playerSender.sendMessage(messagePrefix + ChatColor.GREEN + "Fahrstuhl mit " + stations + " Stationen gefunden! LiftID=" + liftFile.getName().split(".y")[0]);
 			saveLifts();
 		}else{
-			playerSender.sendMessage(ChatColor.RED + "Etwas stimmt mit den Koordinaten nicht!");
+			playerSender.sendMessage(messagePrefix + ChatColor.RED + "Etwas stimmt mit den Koordinaten nicht!");
 			return;
 		}
 	}
@@ -569,7 +565,6 @@ public class StarLift extends JavaPlugin{
 							}
 							
 							guitTaskID = new GuiRunnable(playerSender, liftGui).runTaskLater(this, 1*20L).getTaskId();
-							//playerSender.openInventory(liftGui);
 							return true;
 						}
 					}
@@ -604,7 +599,7 @@ public class StarLift extends JavaPlugin{
 				if(from.getX()<wall2Loc.getX() && from.getX()>wall1Loc.getX()){
 					if(from.getZ()<wall2Loc.getZ() && from.getZ()>wall1Loc.getZ()){
 						if(from.getY()<wall2Loc.getY() && from.getY()>wall1Loc.getY()){
-							Bukkit.broadcastMessage(ChatColor.RED + "aus fahrstuhl " + liftConfig.getString("StarLift.Allgemein.ID"));
+							playerSender.sendMessage(ChatColor.RED + "aus fahrstuhl " + liftConfig.getString("StarLift.Allgemein.ID"));
 							Bukkit.getScheduler().cancelTask(guitTaskID);
 							
 							new BukkitRunnable() {
@@ -723,8 +718,7 @@ public class StarLift extends JavaPlugin{
 		for(int i=0;i<lifts.length;i++){
 			File liftFile = new File(liftPath + lifts[i].toString() + ".yml");
 			FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
-			Bukkit.broadcastMessage(ChatColor.AQUA + liftFile.getAbsolutePath() + " " + lifts[i].toString() + ":" + station[i].toString());
-			if(liftConfig.getInt("StarLift.Allgemein.ID")==Integer.parseInt(liftFile.getName().split(".y")[0])){			
+			if(Integer.parseInt(liftConfig.getString("StarLift.Allgemein.ID"))==Integer.parseInt(liftFile.getName().split(".y")[0])){			
 				liftConfig.set("StarLift.Lift.Position", station[i].toString());
 			}
 			
@@ -745,10 +739,8 @@ public class StarLift extends JavaPlugin{
 		File folder = new File(liftPath);
 		for(int i=0;i<folder.listFiles().length;i++){
 			File liftFile = folder.listFiles()[i];
-			FileConfiguration liftC = YamlConfiguration.loadConfiguration(liftFile);
-			Bukkit.broadcastMessage(liftFile.getAbsolutePath() + " : " + liftC.getInt("StarLift.Allgemein.ID") + " " + liftC.getInt("StarLift.Lift.Position") + " " + liftStats.toString());
-			liftStats.put(liftC.getInt("StarLift.Allgemein.ID"), liftC.getInt("StarLift.Lift.Position"));
-			Bukkit.broadcastMessage(liftC.getString("StarLift.Location.Welt"));
+			FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
+			liftStats.put(Integer.parseInt(liftConfig.getString("StarLift.Allgemein.ID")), Integer.parseInt(liftConfig.getString("StarLift.Lift.Position")));
 		}		
 		Bukkit.broadcastMessage(liftStats.toString());
 	}
