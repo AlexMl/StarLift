@@ -27,10 +27,14 @@ public class BlockBreakListener implements Listener{
 		if(event.getBlock().getState() instanceof Sign){
 			Sign sign = (Sign) event.getBlock().getState();
 			
-			if(sign.getLine(0).equals(plugin.messagePrefix)){
-				plugin.removeSign(event.getBlock().getLocation());
-				eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.DARK_GREEN + "Schild entfernt!");
-				return;
+			if(ChatColor.stripColor(sign.getLine(0) + " ").equals(ChatColor.stripColor(plugin.messagePrefix))){
+				if(plugin.removeSign(event.getBlock().getLocation())){
+					eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.DARK_GREEN + "Schild entfernt!");
+					return;
+				}else{
+					eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.RED + "Schild konnte nicht entfernt werden!");
+					return;
+				}
 			}
 		}
 	}

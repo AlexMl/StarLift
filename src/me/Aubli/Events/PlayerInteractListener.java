@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import me.Aubli.StarLift.StarLift;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -49,7 +51,7 @@ public class PlayerInteractListener implements Listener{
 			if(event.getClickedBlock().getState() instanceof Sign){
 				Sign sign = (Sign) event.getClickedBlock().getState();
 				
-				if(sign.getLine(0).equals(plugin.messagePrefix)){
+				if(ChatColor.stripColor(sign.getLine(0) + " ").equals(ChatColor.stripColor(plugin.messagePrefix))){
 					int liftID = Integer.parseInt(sign.getLine(1).split("t: ")[1]);
 					plugin.callElevator(eventPlayer, liftID, Integer.parseInt(sign.getLine(3).split(": ")[1]));
 					return;

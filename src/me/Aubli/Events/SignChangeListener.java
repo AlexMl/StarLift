@@ -26,8 +26,8 @@ public class SignChangeListener implements Listener{
 					int liftID = Integer.parseInt(event.getLine(1));
 					
 					if(plugin.liftStats.containsKey(liftID)){
-						Bukkit.broadcastMessage(plugin.messagePrefix);
-						event.setLine(0, plugin.messagePrefix);
+						
+						event.setLine(0, "[" + ChatColor.GOLD + "StarLift" + ChatColor.RESET + "]");
 						event.setLine(1, "Lift: " + liftID);
 						event.setLine(2, ChatColor.MAGIC + "Status hier");
 						event.setLine(3, "Stockwerk: " + floor);
