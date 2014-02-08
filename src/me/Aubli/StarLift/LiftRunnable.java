@@ -45,8 +45,9 @@ public class LiftRunnable extends BukkitRunnable{
 		
 		if(dest>orig){ // Fahrstuhl fährt hoch
 			
-			if(player.getLocation().getBlockY()!=dest){
+			if(player.getLocation().getBlockY()!=dest+1){
 				player.teleport(player.getLocation().add(0, 1, 0), TeleportCause.PLUGIN);
+				
 				
 				Location tempLoc = liftLoc.clone();
 				tempLoc.setY(player.getLocation().getBlockY()-2);
@@ -59,7 +60,7 @@ public class LiftRunnable extends BukkitRunnable{
 						tempLoc.clone().add(x, 1, z).getBlock().setType(plugin.liftGround);
 					}
 				}
-				
+			
 				System.out.println(i);
 				if(dest-orig>65){
 					if(i==5){
@@ -106,7 +107,7 @@ public class LiftRunnable extends BukkitRunnable{
 			
 		}else if(orig>dest){ //Fahrstuhl fährt runter
 			
-			if(player.getLocation().getBlockY()!=dest){
+			if(player.getLocation().getBlockY()!=dest+1){
 				
 				Location tempLoc = liftLoc.clone();
 				tempLoc.setY(player.getLocation().getBlockY()-1);
@@ -167,6 +168,7 @@ public class LiftRunnable extends BukkitRunnable{
 				player.playSound(player.getLocation(), Sound.ANVIL_LAND, (float)75, (float)0);
 				player.sendMessage("DING!");
 				plugin.saveLifts();
+				System.out.println(plugin.liftStats.toString());
 				this.cancel();
 			}
 		}

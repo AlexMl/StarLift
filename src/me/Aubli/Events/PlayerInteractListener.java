@@ -51,7 +51,7 @@ public class PlayerInteractListener implements Listener{
 				
 				if(sign.getLine(0).equals(plugin.messagePrefix)){
 					int liftID = Integer.parseInt(sign.getLine(1).split("t: ")[1]);
-					plugin.callElevator(eventPlayer, liftID);
+					plugin.callElevator(eventPlayer, liftID, Integer.parseInt(sign.getLine(3).split(": ")[1]));
 					return;
 				}
 			}
