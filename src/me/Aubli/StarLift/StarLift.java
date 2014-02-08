@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import me.Aubli.Events.BlockBreakListener;
+import me.Aubli.Events.InventoryClickListener;
 import me.Aubli.Events.PlayerInteractListener;
 import me.Aubli.Events.PlayerMoveListener;
 import me.Aubli.Events.SignChangeListener;
@@ -76,6 +77,7 @@ public class StarLift extends JavaPlugin{
 		pm.registerEvents(new BlockBreakListener(this), this);
 		pm.registerEvents(new SignChangeListener(this), this);
 		pm.registerEvents(new PlayerMoveListener(this), this);
+		pm.registerEvents(new InventoryClickListener(this), this);
 	}
 	
 	private void registerCommands(){
@@ -437,7 +439,7 @@ public class StarLift extends JavaPlugin{
 		File liftFile = new File(liftPath + liftID + ".yml");
 		FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
 		
-		//Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
+		Location wall1Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
 		Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
 		
 		Location wallTemp = wall1Loc.clone();
@@ -447,8 +449,8 @@ public class StarLift extends JavaPlugin{
 		int liftZ = liftConfig.getInt("StarLift.Lift.Länge");		
 		
 		for(int x=1;x<(liftX+1);x++){					
-			if(wall1Loc.clone().add(x, 0, 0).getBlock().getType()==Material.AIR){
-				Location tempLoc = wall1Loc.clone().add(x, 0, 0);
+			if(wallTemp.clone().add(x, 0, 0).getBlock().getType()==Material.AIR){
+				Location tempLoc = wallTemp.clone().add(x, 0, 0);
 				if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 					if(tempLoc.clone().subtract(1, 0, 0).getBlock().getType()!=Material.AIR){
 						
@@ -464,8 +466,8 @@ public class StarLift extends JavaPlugin{
 				}
 			}
 			
-			if(wall1Loc.clone().add(0, 0, x).getBlock().getType()==Material.AIR){
-				Location tempLoc = wall1Loc.clone().add(0, 0, x);
+			if(wallTemp.clone().add(0, 0, x).getBlock().getType()==Material.AIR){
+				Location tempLoc = wallTemp.clone().add(0, 0, x);
 				if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 					if(tempLoc.clone().subtract(0, 0, 1).getBlock().getType()!=Material.AIR){
 						
@@ -543,7 +545,7 @@ public class StarLift extends JavaPlugin{
 					if(to.getZ()<wall2Loc.getZ() && to.getZ()>wall1Loc.getZ()){
 						
 						playerSender.sendMessage("im fahrstuhl Nummer " + liftConfig.getString("StarLift.Allgemein.ID") + ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9);
-						Inventory liftGui = Bukkit.createInventory(playerSender, ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9);
+						Inventory liftGui = Bukkit.createInventory(playerSender, ((int)Math.ceil(liftConfig.getDouble("StarLift.Lift.Stationen")/9))*9, "Fahrstuhl " + liftFile.getName().split(".y")[0] + " Welches Stockwerk?");
 						
 						for(int k=0;k<liftConfig.getInt("StarLift.Lift.Stationen");k++){
 							ItemStack lift = new ItemStack(Material.ITEM_FRAME);
