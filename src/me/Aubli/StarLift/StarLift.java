@@ -518,6 +518,8 @@ public class StarLift extends JavaPlugin{
 				}
 			}
 		}
+		playerSender.playSound(playerSender.getLocation(), Sound.PISTON_EXTEND, 75, 0);
+		
 		
 		new LiftRunnable(this, playerSender, wall1Loc, liftX, liftZ, destination, playerSender.getLocation().getBlockY(), 0, liftID).runTaskTimer(this, 25L, 10L);
 		playerSender.playSound(playerSender.getLocation(), Sound.CLICK, 90, 0);
