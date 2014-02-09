@@ -720,10 +720,8 @@ public class StarLift extends JavaPlugin{
 		for(int i=0;i<lifts.length;i++){
 			File liftFile = new File(liftPath + lifts[i].toString() + ".yml");
 			FileConfiguration liftConfig = YamlConfiguration.loadConfiguration(liftFile);
-			if(Integer.parseInt(liftConfig.getString("StarLift.Allgemein.ID"))==Integer.parseInt(liftFile.getName().split(".y")[0])){			
-				liftConfig.set("StarLift.Lift.Position", station[i].toString());
-			}
-			
+			liftConfig.set("StarLift.Lift.Position", station[i].toString());
+				
 			if(liftFile.exists()){
 				try {
 					liftConfig.save(liftFile);
