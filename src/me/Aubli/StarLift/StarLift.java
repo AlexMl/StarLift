@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -111,7 +112,8 @@ public class StarLift extends JavaPlugin{
 		
 		tool = new ItemStack(Material.STICK);		
 		ItemMeta toolMeta = tool.getItemMeta();		
-		toolMeta.setDisplayName("Fahrstuhl tool");		
+		toolMeta.setDisplayName(messagePrefix + "Tool");	
+		toolMeta.addEnchant(Enchantment.DURABILITY, 5, true);
 		tool.setItemMeta(toolMeta);		
 		
 		liftGround = Material.valueOf(this.getConfig().getString("config.lift.material"));
