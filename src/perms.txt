@@ -1,2 +1,5 @@
+sl 								Befehle anzeigen
+
 sl.create 						Fahrstuhl erstellen
 sl.tool 						Tool benutzen
+sl.remove						Fahrstuhl entfernen
