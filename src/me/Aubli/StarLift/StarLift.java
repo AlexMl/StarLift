@@ -265,8 +265,8 @@ public class StarLift extends JavaPlugin{
 		liftConfig.set("StarLift.Lift.Höhe", liftHeight);
 		liftConfig.set("StarLift.Lift.Breite", liftX);
 		liftConfig.set("StarLift.Lift.Länge", liftZ);
-		liftConfig.set("StarLift.Lift.Türhöhe", "");		
-		liftConfig.set("StarLift.Lift.Position", "");
+		liftConfig.set("StarLift.Lift.Türhöhe", "");	
+		liftConfig.set("StarLift.Lift.Position", leftclickLocation.getBlockY()+1);
 		liftConfig.set("StarLift.Lift.Stationen", "");
 		liftConfig.set("StarLift.Stationen", "");
 		
@@ -293,17 +293,18 @@ public class StarLift extends JavaPlugin{
 								
 								if(doorHeight==0){
 									while(tempLoc.clone().add(0, doorHeight, 0).getBlock().getType()==Material.AIR){
-										doorHeight++;
 										System.out.println(tempLoc.clone().add(0, doorHeight, 0).getBlock().toString());
+										doorHeight++;										
 									}
 								}
 								
-								for(int k=0;k<liftX;k++){
-									if(tempLoc.clone().add(k, 0, 0).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(k, 0, 0).getBlock().setType(Material.IRON_FENCE);
-									}
-									if(tempLoc.clone().add(k, 1, 0).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(k, 1, 0).getBlock().setType(Material.IRON_FENCE);
+								for(int h=0;h<doorHeight;h++){
+
+									int k = 0;
+									
+									while(tempLoc.clone().add(k, h, 0).getBlock().getType()==Material.AIR){
+										tempLoc.clone().add(k, h, 0).getBlock().setType(Material.IRON_FENCE);
+										k++;
 									}
 								}
          
@@ -312,11 +313,9 @@ public class StarLift extends JavaPlugin{
 							}
 						}
 					}
-				}
-				
-				for(int z=1;z<(liftZ+1);z++){
-					if(wall1Loc.clone().add(0, y, z).getBlock().getType()==Material.AIR){
-						Location tempLoc = wall1Loc.clone().add(0, y, z);
+					
+					if(wall1Loc.clone().add(0, y, x).getBlock().getType()==Material.AIR){
+						Location tempLoc = wall1Loc.clone().add(0, y, x);
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 							if(tempLoc.clone().subtract(0, 0, 1).getBlock().getType()!=Material.AIR){
 						
@@ -327,23 +326,22 @@ public class StarLift extends JavaPlugin{
 									}
 								}
 								
-								for(int k=0;k<liftX;k++){
-									if(tempLoc.clone().add(0, 0, k).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(0, 0, k).getBlock().setType(Material.IRON_FENCE);
-									}
-									if(tempLoc.clone().add(0, 1, k).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(0, 1, k).getBlock().setType(Material.IRON_FENCE);
+								for(int h=0;h<doorHeight;h++){
+
+									int k = 0;
+									
+									while(tempLoc.clone().add(0, h, k).getBlock().getType()==Material.AIR){
+										tempLoc.clone().add(0, h, k).getBlock().setType(Material.IRON_FENCE);
+										k++;
 									}
 								}
-					
+				
 								stations++;
 								stationY.put(stations, tempLoc.getBlockY()-1);
 							}
 						}
 					}
-				}
-				
-				for(int x=1;x<(liftX+1);x++){					
+			
 					if(wall2Loc.clone().add(-x, y, 0).getBlock().getType()==Material.AIR){
 						Location tempLoc = wall2Loc.clone().add(-x, y, 0);
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
@@ -356,28 +354,27 @@ public class StarLift extends JavaPlugin{
 									}
 								}
 								
-								for(int k=0;k<liftX;k++){
-									if(tempLoc.clone().add(-k, 0, 0).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(-k, 0, 0).getBlock().setType(Material.IRON_FENCE);
-									}
-									if(tempLoc.clone().add(-k, 1, 0).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(-k, 1, 0).getBlock().setType(Material.IRON_FENCE);
+								for(int h=0;h<doorHeight;h++){
+
+									int k = 0;
+									
+									while(tempLoc.clone().add(-k, h, 0).getBlock().getType()==Material.AIR){
+										tempLoc.clone().add(-k, h, 0).getBlock().setType(Material.IRON_FENCE);
+										k++;
 									}
 								}
-
+								
 								stations++;
 								stationY.put(stations, tempLoc.getBlockY()-1);
 							}
 						}
 					}
-				}
-				
-				for(int z=1;z<(liftZ+1);z++){
-					if(wall2Loc.clone().add(0, y, -z).getBlock().getType()==Material.AIR){
-						Location tempLoc = wall2Loc.clone().add(0, y, -z);
+			
+					if(wall2Loc.clone().add(0, y, -x).getBlock().getType()==Material.AIR){
+						Location tempLoc = wall2Loc.clone().add(0, y, -x);
 						if(tempLoc.clone().add(0, 1, 0).getBlock().getType()==Material.AIR && tempLoc.clone().subtract(0, 1, 0).getBlock().getType()!=Material.AIR){
 							if(tempLoc.clone().subtract(0, 0, -1).getBlock().getType()!=Material.AIR){								
-
+								
 								if(doorHeight==0){
 									while(tempLoc.clone().add(0, doorHeight, 0).getBlock().getType()==Material.AIR){
 										doorHeight++;
@@ -385,12 +382,13 @@ public class StarLift extends JavaPlugin{
 									}
 								}
 								
-								for(int k=0;k<liftX;k++){
-									if(tempLoc.clone().add(0, 0, -k).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(0, 0, -k).getBlock().setType(Material.IRON_FENCE);
-									}
-									if(tempLoc.clone().add(0, 1, -k).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(0, 1, -k).getBlock().setType(Material.IRON_FENCE);
+								for(int h=0;h<doorHeight;h++){
+
+									int k = 0;
+									
+									while(tempLoc.clone().add(0, h, -k).getBlock().getType()==Material.AIR){
+										tempLoc.clone().add(0, h, -k).getBlock().setType(Material.IRON_FENCE);
+										k++;
 									}
 								}
 								
@@ -401,7 +399,7 @@ public class StarLift extends JavaPlugin{
 					}
 				}
 			}
-			
+		
 			liftConfig.set("StarLift.Lift.Türhöhe", doorHeight);
 			liftConfig.set("StarLift.Lift.Stationen", stations);			
 			liftConfig.set("StarLift.Location.Wand1.X", wall1Loc.getBlockX());
@@ -412,7 +410,7 @@ public class StarLift extends JavaPlugin{
 			liftConfig.set("StarLift.Location.Wand2.Z", wall2Loc.getBlockZ());
 			
 			liftStats.put(liftConfig.getInt("StarLift.Allgemein.ID"), stationY.get(1));
-			
+			Bukkit.broadcastMessage("Fahrstuhltür: " + doorHeight);
 			Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + stationY.toString());
 			
 			
@@ -428,7 +426,7 @@ public class StarLift extends JavaPlugin{
 				e.printStackTrace();
 			}
 			
-			playerSender.sendMessage(messagePrefix + ChatColor.GREEN + "Fahrstuhl mit " + stations + " Stationen gefunden! LiftID=" + liftFile.getName().split(".y")[0]);
+			playerSender.sendMessage(messagePrefix + ChatColor.GREEN + "Fahrstuhl mit " + ChatColor.GOLD + stations + ChatColor.GREEN + " Stationen gefunden! LiftID=" + liftFile.getName().split(".y")[0]);
 			saveLifts();
 		}else{
 			playerSender.sendMessage(messagePrefix + ChatColor.RED + "Etwas stimmt mit den Koordinaten nicht!");
@@ -460,11 +458,13 @@ public class StarLift extends JavaPlugin{
 					if(tempLoc.clone().subtract(1, 0, 0).getBlock().getType()!=Material.AIR){
 						
 						for(int j=0;j<doorHeight;j++){
-							for(int k=0;k<liftX;k++){
-								if(tempLoc.clone().add(k, j, 0).getBlock().getType()==Material.AIR){
-									tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
-								}								
-							} 
+							
+							int k = 0;
+							
+							while(tempLoc.clone().add(k,j,0).getBlock().getType()==Material.AIR){
+								tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
+								k++;
+							}
 						}
 					}
 				}
@@ -476,11 +476,13 @@ public class StarLift extends JavaPlugin{
 					if(tempLoc.clone().subtract(0, 0, 1).getBlock().getType()!=Material.AIR){
 						
 						for(int j=0;j<doorHeight;j++){
-							for(int k=0;k<liftX;k++){
-								if(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
-									tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
-								}								
-							} 
+
+							int k = 0;
+							
+							while(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
+								tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
+								k++;
+							}
 						}		
 					}
 				}
@@ -492,11 +494,13 @@ public class StarLift extends JavaPlugin{
 					if(tempLoc.clone().add(1, 0, 0).getBlock().getType()!=Material.AIR){
 						
 						for(int j=0;j<doorHeight;j++){
-							for(int k=0;k<liftX;k++){
-								if(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
-									tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
-								}								
-							} 
+
+							int k = 0;
+							
+							while(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
+								tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
+								k++;
+							}
 						}
 					}
 				}
@@ -508,11 +512,13 @@ public class StarLift extends JavaPlugin{
 					if(tempLoc.clone().subtract(0, 0, -1).getBlock().getType()!=Material.AIR){	
 						
 						for(int j=0;j<doorHeight;j++){
-							for(int k=0;k<liftX;k++){
-								if(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
-									tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
-								}								
-							} 
+
+							int k = 0;
+							
+							while(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
+								tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
+								k++;
+							}
 						}
 					}
 				}
@@ -603,6 +609,7 @@ public class StarLift extends JavaPlugin{
 						if(from.getY()<wall2Loc.getY() && from.getY()>wall1Loc.getY()){
 							playerSender.sendMessage(ChatColor.RED + "aus fahrstuhl " + liftConfig.getString("StarLift.Allgemein.ID"));
 							Bukkit.getScheduler().cancelTask(guitTaskID);
+							final Location fromLoc = from.clone();
 							
 							new BukkitRunnable() {
 								
@@ -613,7 +620,7 @@ public class StarLift extends JavaPlugin{
 									Location wall2Loc = new Location(Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt")), liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
 									
 									Location wallTemp = wall1Loc.clone();
-									wallTemp.setY(playerSender.getLocation().getBlockY());
+									wallTemp.setY(fromLoc.getBlockY());
 									wall2Loc.setY(wallTemp.getY());									
 									
 									int doorHeight = liftConfig.getInt("StarLift.Lift.Türhöhe");
@@ -626,11 +633,13 @@ public class StarLift extends JavaPlugin{
 												if(tempLoc.clone().subtract(1, 0, 0).getBlock().getType()!=Material.AIR){
 													
 													for(int j=0;j<doorHeight;j++){
-														for(int k=0;k<liftX;k++){
-															if(tempLoc.clone().add(k, j, 0).getBlock().getType()==Material.AIR){
-																tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
-															}								
-														} 
+														
+														int k = 0;
+														
+														while(tempLoc.clone().add(k,j,0).getBlock().getType()==Material.AIR){
+															tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
+															k++;
+														}
 													}
 												}
 											}
@@ -642,11 +651,13 @@ public class StarLift extends JavaPlugin{
 												if(tempLoc.clone().subtract(0, 0, 1).getBlock().getType()!=Material.AIR){
 													
 													for(int j=0;j<doorHeight;j++){
-														for(int k=0;k<liftX;k++){
-															if(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
-																tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
-															}								
-														} 
+
+														int k = 0;
+														
+														while(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
+															tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
+															k++;
+														}
 													}		
 												}
 											}
@@ -658,11 +669,13 @@ public class StarLift extends JavaPlugin{
 												if(tempLoc.clone().add(1, 0, 0).getBlock().getType()!=Material.AIR){
 													
 													for(int j=0;j<doorHeight;j++){
-														for(int k=0;k<liftX;k++){
-															if(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
-																tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
-															}								
-														} 
+
+														int k = 0;
+														
+														while(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
+															tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
+															k++;
+														}
 													}
 												}
 											}
@@ -674,11 +687,13 @@ public class StarLift extends JavaPlugin{
 												if(tempLoc.clone().subtract(0, 0, -1).getBlock().getType()!=Material.AIR){	
 													
 													for(int j=0;j<doorHeight;j++){
-														for(int k=0;k<liftX;k++){
-															if(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
-																tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
-															}								
-														} 
+
+														int k = 0;
+														
+														while(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
+															tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
+															k++;
+														}
 													}
 												}
 											}
