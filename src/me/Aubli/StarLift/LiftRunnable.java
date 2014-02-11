@@ -181,7 +181,7 @@ public class LiftRunnable extends BukkitRunnable{
 			for(int y=0;y<doorHeight;y++){
 				for(int x=0;x<(liftX+2);x++){	
 					for(int z=0;z<(liftZ+2);z++){
-						if(wall1Loc.clone().add(x, y, z).getBlock().getType()==Material.IRON_FENCE){
+						if(wall1Loc.clone().add(x, y, z).getBlock().getType()==plugin.doorMaterial){
 							wall1Loc.clone().add(x, y, z).getBlock().setType(Material.AIR);
 						}
 					}				

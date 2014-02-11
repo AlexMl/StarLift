@@ -44,6 +44,7 @@ public class StarLift extends JavaPlugin{
 	
 	public ItemStack tool;
 	public Material liftGround;
+	public Material doorMaterial;
 	
 	public HashMap<Integer, Integer> liftStats = new HashMap<Integer, Integer>(); //Hashmap mit fahrstuhlID und aktueller y koordinate!
 	
@@ -100,10 +101,10 @@ public class StarLift extends JavaPlugin{
 			}
 		}
 		
-		
 		this.getConfig().addDefault("config.general.enable", true);
 		
-		this.getConfig().addDefault("config.lift.material", Material.GLASS.name());
+		this.getConfig().addDefault("config.lift.material.ground", Material.GLASS.name());
+		this.getConfig().addDefault("config.lift.material.door", Material.FENCE.name());
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
@@ -116,7 +117,9 @@ public class StarLift extends JavaPlugin{
 		toolMeta.addEnchant(Enchantment.DURABILITY, 5, true);
 		tool.setItemMeta(toolMeta);		
 		
-		liftGround = Material.valueOf(this.getConfig().getString("config.lift.material"));
+		liftGround = Material.valueOf(this.getConfig().getString("config.lift.material.ground"));
+		doorMaterial = Material.valueOf(this.getConfig().getString("config.lift.material.door"));
+
 		loadLifts();
 	}
 	
@@ -171,7 +174,7 @@ public class StarLift extends JavaPlugin{
 		for(int y=0;y<doorHeight;y++){
 			for(int x=0;x<(liftX+2);x++){	
 				for(int z=0;z<(liftZ+2);z++){
-					if(wall1Loc.clone().add(x, y, z).getBlock().getType()==Material.IRON_FENCE){
+					if(wall1Loc.clone().add(x, y, z).getBlock().getType()==doorMaterial){
 						wall1Loc.clone().add(x, y, z).getBlock().setType(Material.AIR);
 					}
 				}				
@@ -303,7 +306,7 @@ public class StarLift extends JavaPlugin{
 									int k = 0;
 									
 									while(tempLoc.clone().add(k, h, 0).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(k, h, 0).getBlock().setType(Material.IRON_FENCE);
+										tempLoc.clone().add(k, h, 0).getBlock().setType(doorMaterial);
 										k++;
 									}
 								}
@@ -331,7 +334,7 @@ public class StarLift extends JavaPlugin{
 									int k = 0;
 									
 									while(tempLoc.clone().add(0, h, k).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(0, h, k).getBlock().setType(Material.IRON_FENCE);
+										tempLoc.clone().add(0, h, k).getBlock().setType(doorMaterial);
 										k++;
 									}
 								}
@@ -359,7 +362,7 @@ public class StarLift extends JavaPlugin{
 									int k = 0;
 									
 									while(tempLoc.clone().add(-k, h, 0).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(-k, h, 0).getBlock().setType(Material.IRON_FENCE);
+										tempLoc.clone().add(-k, h, 0).getBlock().setType(doorMaterial);
 										k++;
 									}
 								}
@@ -387,7 +390,7 @@ public class StarLift extends JavaPlugin{
 									int k = 0;
 									
 									while(tempLoc.clone().add(0, h, -k).getBlock().getType()==Material.AIR){
-										tempLoc.clone().add(0, h, -k).getBlock().setType(Material.IRON_FENCE);
+										tempLoc.clone().add(0, h, -k).getBlock().setType(doorMaterial);
 										k++;
 									}
 								}
@@ -462,7 +465,7 @@ public class StarLift extends JavaPlugin{
 							int k = 0;
 							
 							while(tempLoc.clone().add(k,j,0).getBlock().getType()==Material.AIR){
-								tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
+								tempLoc.clone().add(k, j, 0).getBlock().setType(doorMaterial);
 								k++;
 							}
 						}
@@ -480,7 +483,7 @@ public class StarLift extends JavaPlugin{
 							int k = 0;
 							
 							while(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
-								tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
+								tempLoc.clone().add(0, j, k).getBlock().setType(doorMaterial);
 								k++;
 							}
 						}		
@@ -498,7 +501,7 @@ public class StarLift extends JavaPlugin{
 							int k = 0;
 							
 							while(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
-								tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
+								tempLoc.clone().add(-k, j, 0).getBlock().setType(doorMaterial);
 								k++;
 							}
 						}
@@ -516,7 +519,7 @@ public class StarLift extends JavaPlugin{
 							int k = 0;
 							
 							while(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
-								tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
+								tempLoc.clone().add(0, j, -k).getBlock().setType(doorMaterial);
 								k++;
 							}
 						}
@@ -637,7 +640,7 @@ public class StarLift extends JavaPlugin{
 														int k = 0;
 														
 														while(tempLoc.clone().add(k,j,0).getBlock().getType()==Material.AIR){
-															tempLoc.clone().add(k, j, 0).getBlock().setType(Material.IRON_FENCE);
+															tempLoc.clone().add(k, j, 0).getBlock().setType(doorMaterial);
 															k++;
 														}
 													}
@@ -655,7 +658,7 @@ public class StarLift extends JavaPlugin{
 														int k = 0;
 														
 														while(tempLoc.clone().add(0, j, k).getBlock().getType()==Material.AIR){
-															tempLoc.clone().add(0, j, k).getBlock().setType(Material.IRON_FENCE);
+															tempLoc.clone().add(0, j, k).getBlock().setType(doorMaterial);
 															k++;
 														}
 													}		
@@ -673,7 +676,7 @@ public class StarLift extends JavaPlugin{
 														int k = 0;
 														
 														while(tempLoc.clone().add(-k, j, 0).getBlock().getType()==Material.AIR){
-															tempLoc.clone().add(-k, j, 0).getBlock().setType(Material.IRON_FENCE);
+															tempLoc.clone().add(-k, j, 0).getBlock().setType(doorMaterial);
 															k++;
 														}
 													}
@@ -691,7 +694,7 @@ public class StarLift extends JavaPlugin{
 														int k = 0;
 														
 														while(tempLoc.clone().add(0, j, -k).getBlock().getType()==Material.AIR){
-															tempLoc.clone().add(0, j, -k).getBlock().setType(Material.IRON_FENCE);
+															tempLoc.clone().add(0, j, -k).getBlock().setType(doorMaterial);
 															k++;
 														}
 													}
