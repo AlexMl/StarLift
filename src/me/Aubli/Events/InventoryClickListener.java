@@ -1,6 +1,6 @@
 package me.Aubli.Events;
 
-import me.Aubli.StarLift.StarLift;
+import me.Aubli.LiftManager;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,9 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryClickListener implements Listener{
-	public InventoryClickListener(StarLift plugin){
-		this.plugin = plugin;
-	}
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event){
@@ -28,14 +25,11 @@ public class InventoryClickListener implements Listener{
 						eventPlayer.closeInventory();
 						
 						int floor = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().split("werk ")[1]);
-						plugin.lift(eventPlayer, Integer.parseInt(event.getInventory().getTitle().split("Fahrstuhl ")[1].split(". Welches")[0]), floor);
+						LiftManager.getManager().lift(eventPlayer, Integer.parseInt(event.getInventory().getTitle().split("Fahrstuhl ")[1].split(". Welches")[0]), floor);
 						return;
 					}
 				}
 			}
-		}
-		
+		}		
 	}
-	
-	private StarLift plugin;
 }

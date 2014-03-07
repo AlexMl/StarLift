@@ -1,6 +1,4 @@
-package me.Aubli.StarLift;
-
-import java.io.File;
+package me.Aubli;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -48,13 +46,12 @@ public class StarLiftCommands implements CommandExecutor{
 			
 			if(args.length==2){
 				if(args[0].equalsIgnoreCase("remove")){
-					if(playerSender.hasPermission("sl.remove")){
-						File liftFile = new File(plugin.liftPath + args[1] + ".yml");
+					if(playerSender.hasPermission("sl.remove")){						
+						boolean success = LiftManager.getManager().removeLift(Integer.parseInt(args[1]));
 						
-						if(liftFile.exists()){
-							liftFile.delete();
-							plugin.liftStats.remove(Integer.parseInt(args[1]));
-							plugin.saveLifts();
+						if(success==true){
+							playerSender.sendMessage(plugin.messagePrefix + ChatColor.GREEN + "Der Lift " + args[1] + " wurde entfernt!");
+							return true;
 						}else{
 							playerSender.sendMessage(plugin.messagePrefix + ChatColor.RED + "Der Lift " + args[1] + " existiert nicht!");
 							return true;
@@ -71,7 +68,7 @@ public class StarLiftCommands implements CommandExecutor{
 			
 			if(args.length==3){
 				if(args[0].equalsIgnoreCase("lift")){
-					plugin.lift(playerSender, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+					LiftManager.getManager().lift(playerSender, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 					return true;
 				}else{
 					printCommands(playerSender);

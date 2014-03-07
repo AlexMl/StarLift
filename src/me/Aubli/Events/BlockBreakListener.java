@@ -1,6 +1,7 @@
 package me.Aubli.Events;
 
-import me.Aubli.StarLift.StarLift;
+import me.Aubli.SignManager;
+import me.Aubli.StarLift;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
@@ -28,7 +29,7 @@ public class BlockBreakListener implements Listener{
 			Sign sign = (Sign) event.getBlock().getState();
 			
 			if(ChatColor.stripColor(sign.getLine(0) + " ").equals(ChatColor.stripColor(plugin.messagePrefix))){
-				if(plugin.removeSign(event.getBlock().getLocation())){
+				if(SignManager.getManager().removeSign(event.getBlock().getLocation())){
 					eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.DARK_GREEN + "Schild entfernt!");
 					return;
 				}else{

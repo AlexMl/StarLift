@@ -2,7 +2,8 @@ package me.Aubli.Events;
 
 import java.util.HashMap;
 
-import me.Aubli.StarLift.StarLift;
+import me.Aubli.LiftManager;
+import me.Aubli.StarLift;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,16 +31,16 @@ public class PlayerInteractListener implements Listener{
 				
 				if(event.getAction().equals(Action.LEFT_CLICK_BLOCK)){
 					locs.put("left", event.getClickedBlock().getLocation());
-					eventPlayer.sendMessage("links click gespeichert");					
+					eventPlayer.sendMessage(plugin.messagePrefix + "linker Click gespeichert");					
 				}
 				
 				if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 					locs.put("right", event.getClickedBlock().getLocation());
-					eventPlayer.sendMessage("rechts click gespeichert");	
+					eventPlayer.sendMessage(plugin.messagePrefix + "rechter Click gespeichert");	
 				}
 				
 				if(locs.containsKey("left") && locs.containsKey("right")){
-					plugin.saveElevator(eventPlayer, locs.get("left"), locs.get("right"));
+					LiftManager.getManager().addLift(eventPlayer, locs.get("left"), locs.get("right"), true);
 					locs.clear();
 					return;
 				}
@@ -52,7 +53,7 @@ public class PlayerInteractListener implements Listener{
 				
 				if(ChatColor.stripColor(sign.getLine(0) + " ").equals(ChatColor.stripColor(plugin.messagePrefix))){
 					int liftID = Integer.parseInt(sign.getLine(1).split("t: ")[1]);
-					plugin.callElevator(eventPlayer, liftID, Integer.parseInt(sign.getLine(3).split(": ")[1]));
+					LiftManager.getManager().callLift(eventPlayer, liftID, Integer.parseInt(sign.getLine(3).split(": ")[1]));
 					return;
 				}
 			}
