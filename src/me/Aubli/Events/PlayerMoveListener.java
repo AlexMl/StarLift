@@ -92,11 +92,11 @@ public class PlayerMoveListener implements Listener{
 			
 			final Lift lift = LiftManager.getManager().getLifts()[i];
 			
-			if(lift.closeDoor()){
-				Location wall1Loc = lift.getWall1Loc();
-				Location wall2Loc = lift.getWall2Loc();		
-				wall1Loc.add(0.8, 0, 0.8);
-				wall2Loc.add(-0.2, lift.getHeight(), -0.2);
+			
+			Location wall1Loc = lift.getWall1Loc();
+			Location wall2Loc = lift.getWall2Loc();		
+			wall1Loc.add(0.8, 0, 0.8);
+			wall2Loc.add(-0.2, lift.getHeight(), -0.2);
 				
 			/*	Bukkit.broadcastMessage(wall1Loc.toString() + "  " + wall2Loc.toString());
 				
@@ -107,14 +107,14 @@ public class PlayerMoveListener implements Listener{
 				Bukkit.broadcastMessage("FromZ > wall1LocZ : " + ChatColor.AQUA + from.getZ() + ChatColor.RESET + ">" + ChatColor.GOLD + wall1Loc.getZ() + ChatColor.RESET + " = " + ChatColor.GREEN + (from.getZ()>wall1Loc.getZ()) + "\n\n");
 			*/	
 				
-				if(to.getX()>wall2Loc.getX() || to.getX()<wall1Loc.getX() || to.getZ()>wall2Loc.getZ() || to.getZ()<wall1Loc.getZ()){
-					if(from.getX()<wall2Loc.getX() && from.getX()>wall1Loc.getX()){
-						if(from.getZ()<wall2Loc.getZ() && from.getZ()>wall1Loc.getZ()){
-							if(from.getY()<wall2Loc.getY() && from.getY()>wall1Loc.getY()){
-								playerSender.sendMessage(ChatColor.RED + "aus fahrstuhl " + lift.getLiftID());
-								Bukkit.getScheduler().cancelTask(guiTaskID);
-								final Location fromLoc = from.clone();
-								
+			if(to.getX()>wall2Loc.getX() || to.getX()<wall1Loc.getX() || to.getZ()>wall2Loc.getZ() || to.getZ()<wall1Loc.getZ()){
+				if(from.getX()<wall2Loc.getX() && from.getX()>wall1Loc.getX()){
+					if(from.getZ()<wall2Loc.getZ() && from.getZ()>wall1Loc.getZ()){
+						if(from.getY()<wall2Loc.getY() && from.getY()>wall1Loc.getY()){
+							playerSender.sendMessage(ChatColor.RED + "aus fahrstuhl " + lift.getLiftID());
+							Bukkit.getScheduler().cancelTask(guiTaskID);
+							final Location fromLoc = from.clone();
+							if(lift.closeDoor()){
 								new BukkitRunnable() {
 									
 									@Override
