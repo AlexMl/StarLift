@@ -1,6 +1,9 @@
 package me.Aubli;
 
+import me.Aubli.Events.PlayerInteractListener;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,6 +41,22 @@ public class StarLiftCommands implements CommandExecutor{
 						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 						return true;
 					}
+				}else if(args[0].equalsIgnoreCase("list")){
+					if(playerSender.hasPermission("sl.list")){
+						String pluginVersion = plugin.getDescription().getVersion();
+						String pluginName = plugin.getDescription().getName();
+					
+						playerSender.sendMessage(ChatColor.YELLOW + "|---------- " + pluginName + " v" + pluginVersion + " Lifts ----------|");
+					
+						for(int i=0;i<LiftManager.getManager().getLifts().length;i++){
+							Lift lift = LiftManager.getManager().getLifts()[i];
+							playerSender.sendMessage(ChatColor.YELLOW + "| ID:" + ChatColor.DARK_GRAY + lift.getLiftID() + ChatColor.YELLOW + "  Höhe:" + ChatColor.DARK_GRAY + lift.getHeight() + ChatColor.YELLOW + "  Türen schließen:" + ChatColor.DARK_GRAY + lift.closeDoor());
+						}
+						return true;
+					}else{
+						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
+						return true;
+					}
 				}else{
 					printCommands(playerSender);
 					return true;
@@ -60,6 +79,23 @@ public class StarLiftCommands implements CommandExecutor{
 						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 						return true;
 					}
+				}else if(args[0].equalsIgnoreCase("add")){					
+					if(playerSender.hasPermission("sl.add")){
+						if(args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")){
+							boolean close = Boolean.parseBoolean(args[1]);
+							PlayerInteractListener.getInstance().setBoolean(close);
+								
+							playerSender.getInventory().addItem(plugin.tool);					
+							playerSender.sendMessage("Markier den Fahrstuhl mit links- und rechtsclick!");
+							return true;
+						}else{
+							playerSender.sendMessage(ChatColor.RED + "Eines der Argumente ist falsch!");
+							return true;
+						}
+					}else{
+						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
+						return true;
+					}
 				}else{
 					printCommands(playerSender);
 					return true;
@@ -70,6 +106,42 @@ public class StarLiftCommands implements CommandExecutor{
 				if(args[0].equalsIgnoreCase("lift")){
 					LiftManager.getManager().lift(playerSender, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 					return true;
+				}else{
+					printCommands(playerSender);
+					return true;
+				}
+			}
+			
+			if(args.length==4){
+				if(args[0].equalsIgnoreCase("add")){
+					if(playerSender.hasPermission("sl.add")){
+						if(args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")){
+							boolean close = Boolean.parseBoolean(args[1]);
+							String door = args[2];
+							String ground = args[3];
+							
+							try{
+								Material doorMaterial = Material.valueOf(door);
+								Material groundMaterial = Material.valueOf(ground);
+								
+								PlayerInteractListener.getInstance().setMaterial(doorMaterial, groundMaterial);
+								PlayerInteractListener.getInstance().setBoolean(close);
+								
+								playerSender.getInventory().addItem(plugin.tool);					
+								playerSender.sendMessage("Markier den Fahrstuhl mit links- und rechtsclick!");
+								return true;
+							}catch(IllegalArgumentException e){
+								playerSender.sendMessage(ChatColor.RED + "Die Materialien existieren nicht!");
+								return true;
+							}							
+						}else{
+							playerSender.sendMessage(ChatColor.RED + "Eines der Argumente ist falsch!");
+							return true;
+						}
+					}else{
+						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
+						return true;
+					}
 				}else{
 					printCommands(playerSender);
 					return true;
@@ -89,6 +161,8 @@ public class StarLiftCommands implements CommandExecutor{
 			
 			playerSender.sendMessage(ChatColor.YELLOW + "|---------- " + pluginName + " v" + pluginVersion + " ----------|");
 			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sl tool");
+			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sl add [closeDoors] [DoorMaterial] [GroundMaterial]");
+			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sl add [closeDoors]");
 			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sl remove [LiftID]");
 			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sl list");
 		}else{

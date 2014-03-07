@@ -7,6 +7,7 @@ import me.Aubli.StarLift;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,9 +18,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class PlayerInteractListener implements Listener{
 	public PlayerInteractListener(StarLift plugin){
 		this.plugin = plugin;
+		piListener = this;
 	}
 	
 	private HashMap<String, Location> locs = new HashMap<String, Location>();
+	
+	public boolean closeDoors = true;
+	public Material door;
+	public Material ground;
+	
+	public static PlayerInteractListener piListener;
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
@@ -39,10 +47,18 @@ public class PlayerInteractListener implements Listener{
 					eventPlayer.sendMessage(plugin.messagePrefix + "rechter Click gespeichert");	
 				}
 				
-				if(locs.containsKey("left") && locs.containsKey("right")){
-					LiftManager.getManager().addLift(eventPlayer, locs.get("left"), locs.get("right"), true);
-					locs.clear();
-					return;
+				if(locs.containsKey("left") && locs.containsKey("right")){					
+					if(door!=null && ground !=null){
+						LiftManager.getManager().addLift(eventPlayer, locs.get("left"), locs.get("right"), closeDoors, door, ground);
+						locs.clear();
+						door = null;
+						ground = null;
+						return;
+					}else{
+						LiftManager.getManager().addLift(eventPlayer, locs.get("left"), locs.get("right"), closeDoors);
+						locs.clear();
+						return;
+					}
 				}
 			}
 		}
@@ -58,6 +74,19 @@ public class PlayerInteractListener implements Listener{
 				}
 			}
 		}
+	}
+	
+	public static PlayerInteractListener getInstance(){
+		return piListener;
+	}
+	
+	public void setMaterial(Material door, Material ground){
+		this.door = door;
+		this.ground = ground;
+	}
+	
+	public void setBoolean(boolean close){
+		this.closeDoors = close;
 	}
 	
 	private StarLift plugin;

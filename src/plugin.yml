@@ -9,4 +9,5 @@ commands:
        description: StarLift Befehle!
        usage: |
               /<command> tool
+              /<command> list
               /<command> lift [liftID] [dest]
