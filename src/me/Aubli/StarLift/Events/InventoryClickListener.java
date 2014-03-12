@@ -1,6 +1,6 @@
-package me.Aubli.Events;
+package me.Aubli.StarLift.Events;
 
-import me.Aubli.LiftManager;
+import me.Aubli.StarLift.LiftManager;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

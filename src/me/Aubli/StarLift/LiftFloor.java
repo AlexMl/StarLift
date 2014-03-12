@@ -1,4 +1,4 @@
-package me.Aubli;
+package me.Aubli.StarLift;
 
 public class LiftFloor {
 

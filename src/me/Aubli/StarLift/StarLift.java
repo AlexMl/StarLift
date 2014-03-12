@@ -1,14 +1,14 @@
-package me.Aubli;
+package me.Aubli.StarLift;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import me.Aubli.Events.BlockBreakListener;
-import me.Aubli.Events.InventoryClickListener;
-import me.Aubli.Events.PlayerInteractListener;
-import me.Aubli.Events.PlayerMoveListener;
-import me.Aubli.Events.SignChangeListener;
+import me.Aubli.StarLift.Events.BlockBreakListener;
+import me.Aubli.StarLift.Events.InventoryClickListener;
+import me.Aubli.StarLift.Events.PlayerInteractListener;
+import me.Aubli.StarLift.Events.PlayerMoveListener;
+import me.Aubli.StarLift.Events.SignChangeListener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

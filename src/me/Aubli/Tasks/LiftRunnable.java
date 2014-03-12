@@ -1,7 +1,7 @@
-package me.Aubli.Tasks;
+package me.Aubli.StarLift.Tasks;
 
-import me.Aubli.Lift;
-import me.Aubli.StarLift;
+import me.Aubli.StarLift.Lift;
+import me.Aubli.StarLift.StarLift;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

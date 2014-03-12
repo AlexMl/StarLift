@@ -1,7 +1,7 @@
-package me.Aubli.Events;
+package me.Aubli.StarLift.Events;
 
-import me.Aubli.SignManager;
-import me.Aubli.StarLift;
+import me.Aubli.StarLift.SignManager;
+import me.Aubli.StarLift.StarLift;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;

@@ -1,4 +1,4 @@
-package me.Aubli;
+package me.Aubli.StarLift;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import me.Aubli.Tasks.LiftRunnable;
+import me.Aubli.StarLift.Tasks.LiftRunnable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

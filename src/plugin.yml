@@ -2,7 +2,7 @@ name: StarLift
 version: 1.0
 description: Fahrstuhl plugin
 author: Aubli
-main: me.Aubli.StarLift
+main: me.Aubli.StarLift.StarLift
 
 commands:
     sl:

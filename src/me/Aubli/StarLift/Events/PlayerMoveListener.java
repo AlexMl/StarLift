@@ -1,9 +1,9 @@
-package me.Aubli.Events;
+package me.Aubli.StarLift.Events;
 
-import me.Aubli.Lift;
-import me.Aubli.LiftManager;
-import me.Aubli.StarLift;
-import me.Aubli.Tasks.GuiRunnable;
+import me.Aubli.StarLift.Lift;
+import me.Aubli.StarLift.LiftManager;
+import me.Aubli.StarLift.StarLift;
+import me.Aubli.StarLift.Tasks.GuiRunnable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

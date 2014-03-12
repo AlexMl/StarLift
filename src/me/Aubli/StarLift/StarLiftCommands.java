@@ -1,6 +1,6 @@
-package me.Aubli;
+package me.Aubli.StarLift;
 
-import me.Aubli.Events.PlayerInteractListener;
+import me.Aubli.StarLift.Events.PlayerInteractListener;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

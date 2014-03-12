@@ -1,9 +1,9 @@
-package me.Aubli.Events;
+package me.Aubli.StarLift.Events;
 
 import java.util.HashMap;
 
-import me.Aubli.LiftManager;
-import me.Aubli.StarLift;
+import me.Aubli.StarLift.LiftManager;
+import me.Aubli.StarLift.StarLift;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
