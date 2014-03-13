@@ -63,7 +63,6 @@ public class LiftManager {
 			File liftFile = folder.listFiles()[i];
 			Lift lift = new Lift(liftFile);
 			lifts.add(lift);
-			Bukkit.broadcastMessage(lift.toString());
 		}	
 	}
 	
@@ -438,6 +437,7 @@ public class LiftManager {
 		for(int i=0;i<lifts.size();i++){
 			liftArray[i] = lifts.get(i);
 		}
+		
 		return liftArray;
 	}
 	
