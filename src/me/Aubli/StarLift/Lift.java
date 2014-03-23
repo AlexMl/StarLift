@@ -76,10 +76,6 @@ public class Lift {
 		this.liftConfig = YamlConfiguration.loadConfiguration(this.liftFile);
 		
 		this.liftID = liftConfig.getInt("StarLift.Allgemein.ID");
-		this.liftWorld = Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt"));
-		
-		this.wall1Loc = new Location(liftWorld, liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
-		this.wall2Loc = new Location(liftWorld, liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
 		
 		this.liftHeight = liftConfig.getInt("StarLift.Lift.Höhe");
 		this.doorHeight = liftConfig.getInt("StarLift.Lift.Türhöhe");
@@ -93,8 +89,12 @@ public class Lift {
 		this.liftGround = Material.valueOf(liftConfig.getString("StarLift.Lift.Boden"));
 		this.doorMaterial = Material.valueOf(liftConfig.getString("StarLift.Lift.Tür"));
 		
-		this.floors = new ArrayList<LiftFloor>();
+		this.floors = new ArrayList<LiftFloor>();		
+		this.liftWorld = Bukkit.getWorld(liftConfig.getString("StarLift.Location.Welt"));
 		
+		this.wall1Loc = new Location(liftWorld, liftConfig.getInt("StarLift.Location.Wand1.X"), liftConfig.getInt("StarLift.Location.Wand1.Y"), liftConfig.getInt("StarLift.Location.Wand1.Z"));
+		this.wall2Loc = new Location(liftWorld, liftConfig.getInt("StarLift.Location.Wand2.X"), liftConfig.getInt("StarLift.Location.Wand2.Y"), liftConfig.getInt("StarLift.Location.Wand2.Z"));
+			
 		for(int i=1;liftConfig.get("StarLift.Stationen." + i)!=null;i++){				
 			floors.add(new LiftFloor(this, liftConfig.getInt("StarLift.Stationen." + i), i));				
 		}

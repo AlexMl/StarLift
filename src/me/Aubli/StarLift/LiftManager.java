@@ -25,7 +25,7 @@ public class LiftManager {
 	
 	public LiftManager(){
 		instance = this;
-		loadLifts();
+		loadLifts();	
 	}
 	
 	public static LiftManager getManager(){
@@ -60,15 +60,19 @@ public class LiftManager {
 	private void loadLifts(){
 		File folder = new File(liftPath);
 		for(int i=0;i<folder.listFiles().length;i++){
-			File liftFile = folder.listFiles()[i];
-			Lift lift = new Lift(liftFile);
-			lifts.add(lift);
+			Lift lift = new Lift(folder.listFiles()[i]);
+			if(lift.getWorld()!=null){
+				lifts.add(lift);
+			//	System.out.println("load " + lifts.get(lifts.size()-1).getLiftID());
+			}
+		//	System.out.println("load " + lifts.get(lifts.size()-1).getLiftID());					
 		}	
 	}
 	
 	public void saveLifts(){		
 		try{
 			for(int i=0;i<lifts.size();i++){
+				//System.out.println("save " + lifts.get(i).getLiftID());
 				lifts.get(i).saveLift();
 			}
 		}catch (IOException e){
@@ -436,6 +440,7 @@ public class LiftManager {
 		Lift[] liftArray = new Lift[lifts.size()];
 		for(int i=0;i<lifts.size();i++){
 			liftArray[i] = lifts.get(i);
+		//	System.out.println(lifts.get(i).getLiftID());
 		}
 		
 		return liftArray;

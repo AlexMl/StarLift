@@ -43,14 +43,14 @@ public class StarLift extends JavaPlugin{
 	@Override
 	public void onEnable(){
 		
-		loadConfig();
-		registerCommands();
-		registerListeners();		
-		
+		loadConfig();		
 		instance = this;
 		
 		new LiftManager();
 		new SignManager();
+		
+		registerCommands();
+		registerListeners();			
 		
 		if(enable==false){
 			Bukkit.getPluginManager().disablePlugin(this);
