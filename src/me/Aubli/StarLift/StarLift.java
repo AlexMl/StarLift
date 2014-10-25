@@ -123,9 +123,9 @@ public class StarLift extends JavaPlugin{
 				playerSender.getInventory().remove(tool);
 			}
 		}else{
-			for(int i=0;i<Bukkit.getOnlinePlayers().length;i++){
-				if(Bukkit.getOnlinePlayers()[i].getInventory().contains(tool)){
-					Bukkit.getOnlinePlayers()[i].getInventory().remove(tool);
+			for(Player p : Bukkit.getOnlinePlayers()){
+				if(p.getInventory().contains(tool)){
+					p.getInventory().remove(tool);
 				}
 			}
 		}
